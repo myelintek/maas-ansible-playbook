@@ -16,6 +16,8 @@ maas_postgres_proxy_uri: "postgres://{{ maas_postgres_uri_login }}@{{ maas_postg
 
 maas_postgres_primary_host_v4: "{{ hostvars[groups['maas_postgres'][0]]['ansible_default_ipv4']['address']|d('') }}"
 maas_postgres_primary_host_v6: "{{ hostvars[groups['maas_postgres'][0]]['ansible_default_ipv6']['address']|d('') }}"
+# Change the maas_postgres_primary_host_v4 to floating IP when enabling the MaaS HA
+# eg: maas_postgres_primary_uri: "postgres://{{ maas_postgres_uri_login }}@192.168.0.99:5432/{{ maas_postgres_database }}"
 maas_postgres_primary_uri: "postgres://{{ maas_postgres_uri_login }}@{{ maas_postgres_primary_host_v4|d(maas_postgres_primary_host_v6, True) }}:5432/{{ maas_postgres_database }}"
 
 maas_postgres_uri: "{{ maas_postgres_proxy_uri if groups['maas_postgres_proxy']|d(False) else maas_postgres_primary_uri }}"

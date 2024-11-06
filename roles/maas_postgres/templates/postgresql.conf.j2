@@ -63,8 +63,8 @@ listen_addresses = '{%- if extra_ip is defined -%}{{ extra_ip }}, {% endif -%}{%
                                         # defaults to 'localhost'; use '*' for all
                                         # (change requires restart)
 port = 5432                             # (change requires restart)
-max_connections = 100                   # (change requires restart)
-#superuser_reserved_connections = 3     # (change requires restart)
+max_connections = 20000                 # (change requires restart)
+superuser_reserved_connections = 10000  # (change requires restart)
 unix_socket_directories = '/var/run/postgresql' # comma-separated list of directories
 #unix_socket_group = ''                 # (change requires restart)
 #unix_socket_permissions = 0777         # begin with 0 to use octal notation
@@ -734,7 +734,7 @@ default_text_search_config = 'pg_catalog.english'
 # LOCK MANAGEMENT
 #------------------------------------------------------------------------------
 
-#deadlock_timeout = 1s
+deadlock_timeout = 10s
 #max_locks_per_transaction = 64         # min 10
                                         # (change requires restart)
 #max_pred_locks_per_transaction = 64    # min 10

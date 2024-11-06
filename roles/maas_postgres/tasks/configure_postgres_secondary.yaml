@@ -48,6 +48,7 @@
       -S {{ maas_postgres_replication_slot ~ "_" ~ inventory_hostname|regex_replace('[^A-Za-z0-9_]', '_') }}
     responses:
       '(?i)password': "{{ maas_postgres_replication_password }}"
+    timeout: 360
   when: not (inventory_hostname == groups['maas_postgres'][0])
   become: true
   become_user: postgres
