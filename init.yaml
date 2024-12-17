@@ -17,6 +17,7 @@
     - name: "Upload public key to MaaS"
       ansible.builtin.command: "maas admin sshkeys create \"key={{ public_key_content.stdout }}\""
       become: true
+      ignore_errors: true
 
     - name: "Set the DNS information for MaaS"
       ansible.builtin.command: "maas admin maas set-config name=upstream_dns value=\"8.8.8.8\""
