@@ -1,0 +1,23 @@
+---
+- hosts: all[0]
+  tasks:
+    - name: "Check whether the public key is existed"
+      stat:
+        path: .ssh/id_rsa.pub
+      register: public_key_state
+
+    - name: "Generate the key while the public key isn't existed"
+      ansible.builtin.command: "ssh-keygen -t rsa -N '' -f .ssh/id_rsa"
+      when: not public_key_state.stat.exists
+
+    - name: "Extract public key"
+      ansible.builtin.command: "cat .ssh/id_rsa.pub"
+      register: public_key_content
+
+    - name: "Upload public key to MaaS"
+      ansible.builtin.command: "maas admin sshkeys create \"key={{ public_key_content.stdout }}\""
+      become: true
+
+    - name: "Set the DNS information for MaaS"
+      ansible.builtin.command: "maas admin maas set-config name=upstream_dns value=\"8.8.8.8\""
+      become: true
